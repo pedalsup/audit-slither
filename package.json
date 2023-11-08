@@ -1,18 +1,23 @@
 {
-  "name": "slither-report",
-  "version": "1.0.0",
-  "description": "",
+  "name": "slither-audit",
+  "version": "1.0.1",
+  "description": "The slither-audit npm CLI tool is a powerful utility for generating detailed Slither reports for Ethereum smart contracts and converting them into PDF format. This tool simplifies the process of analyzing Ethereum smart contracts for security vulnerabilities using the Slither static analysis framework.",
   "main": "bin/slither-report.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "audit-slither": "bin/slither-report.js"
+    "slither-audit": "bin/slither-report.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "slither",
+    "slither-audit",
+    "audit-slither"
+  ],
+  "author": "rupen jarsaniya",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "puppeteer": "^21.5.0"
   }
 }
