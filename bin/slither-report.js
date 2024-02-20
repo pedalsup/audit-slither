@@ -6,6 +6,7 @@ const puppeteer = require("puppeteer");
 const { spawn } = require("child_process");
 const { fetchContractSourceCode } = require("../src/fetch-contract");
 
+// Paths
 const jsonReportPath = path.join(process.cwd(), "slither.json");
 const htmlReportPath = path.join(process.cwd(), "slither.html");
 const pdfReportPath = path.join(
@@ -19,14 +20,14 @@ let projectName;
 let slitherProcess;
 let networkName;
 
-for (let index = 0; index < process.argv.slice(2).length; index++) {
-  const arg = process.argv.slice(2)[index];
-  if (arg.split("=")[0] === "contract") {
-    contractAddress = arg.split("=")[1];
-  } else if (arg.split("=")[0] === "project") {
-    projectName = arg.split("=")[1];
-  } else if (arg.split("=")[0] === "network") {
-    networkName = arg.split("=")[1];
+const arg = process.argv;
+for (let i = 0; i < arg.length; i++) {
+  if (arg[i] === "-c" || arg[i] === "--contract") {
+    contractAddress = arg[i + 1];
+  } else if (arg[i] === "-p" || arg[i] === "--project") {
+    projectName = arg[i + 1];
+  } else if (arg[i] === "-n" || arg[i] === "--network") {
+    networkName = arg[i + 1];
   }
 }
 
@@ -56,6 +57,7 @@ if (contractAddress) {
   main();
 }
 
+// Main function
 async function main() {
   slitherProcess.stdout.on("data", (data) => {
     console.log(data.toString());
@@ -66,7 +68,6 @@ async function main() {
   });
 
   slitherProcess.on("close", () => {
-    //   if (code === 0) {
     const jsonData = require(jsonReportPath);
     if (jsonData.success) {
       const html = generateHTMLReport(jsonData);
@@ -76,12 +77,10 @@ async function main() {
         generatePDF(htmlReportPath, pdfReportPath);
       })();
     }
-    //   } else {
-    //     console.error("Slither report generation failed");
-    //   }
   });
 }
 
+// Generate PDF
 async function generatePDF(inputHtmlPath, outputPdfPath) {
   const browser = await puppeteer.launch({
     headless: false,
@@ -110,12 +109,14 @@ async function generatePDF(inputHtmlPath, outputPdfPath) {
   console.log("Slither report generated successfully");
 }
 
+// Delete file
 function deleteFile(path) {
   if (fs.existsSync(path)) {
     fs.unlinkSync(path);
   }
 }
 
+// Generate HTML Report
 function generateHTMLReport(data) {
   const htmlTemplate = `
       <html>
@@ -131,6 +132,7 @@ function generateHTMLReport(data) {
           max-width: 100vw;
           width: 100%;
           overflow-x: hidden;
+          font-size: 12px;
         }
         table {
           border: 1px solid black;
@@ -167,6 +169,7 @@ function generateHTMLReport(data) {
   return htmlTemplate;
 }
 
+// Generate HTML (Table Row) for results
 function generateResultsHTML(results) {
   let html = "";
   for (const result of results) {
