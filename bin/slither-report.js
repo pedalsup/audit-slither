@@ -129,17 +129,17 @@ function deleteFile(path) {
 
 // Generate HTML Report
 function generateHTMLReport(data) {
-  const lowImapactIssues = data.results.detectors.filter(
-    (item) => item.impact === "Low"
+  const lowImpactIssues = data.results.detectors.filter(
+    (item) => item.impact === "Low" && !item.first_markdown_element.toString().includes("node_modules")
   );
-  const mediumImapactIssues = data.results.detectors.filter(
-    (item) => item.impact === "Medium"
+  const mediumImpactIssues = data.results.detectors.filter(
+    (item) => item.impact === "Medium" && !item.first_markdown_element.toString().includes("node_modules")
   );
-  const highImapactIssues = data.results.detectors.filter(
-    (item) => item.impact === "High"
+  const highImpactIssues = data.results.detectors.filter(
+    (item) => item.impact === "High" && !item.first_markdown_element.toString().includes("node_modules")
   );
-  const imformationalImapactIssues = data.results.detectors.filter(
-    (item) => item.impact === "Informational"
+  const informationalImpactIssues = data.results.detectors.filter(
+    (item) => item.impact === "Informational" && !item.first_markdown_element.toString().includes("node_modules")
   );
 
   const htmlTemplate = `
@@ -195,39 +195,33 @@ function generateHTMLReport(data) {
             <th style="color: gray;">Informational</th>
           </tr>
           <tr>
-            <td>${highImapactIssues.length}</td>
-            <td>${mediumImapactIssues.length}</td>
-            <td>${lowImapactIssues.length}</td>
-            <td>${imformationalImapactIssues.length}</td>
+            <td>${highImpactIssues.length}</td>
+            <td>${mediumImpactIssues.length}</td>
+            <td>${lowImpactIssues.length}</td>
+            <td>${informationalImpactIssues.length}</td>
           </tr>
         </table>
         </div>
         
         <h2>Technical Details</h2>
         ${
-          highImapactIssues.length > 0
+          highImpactIssues.length > 0
             ? `<div class="page-break-after">
               <h3>High</h3>
               <div>
-                ${generateResultsHTML(
-                  data.results.detectors.filter(
-                    (item) => item.impact === "High"
-                  )
-                )}
+                ${generateResultsHTML(highImpactIssues)}
               </div>
             </div>`
             : ``
         }
 
         ${
-          mediumImapactIssues.length > 0
+          mediumImpactIssues.length > 0
             ? `<div class="page-break-after">
               <h3>Medium</h3>
               <div>
                 ${generateResultsHTML(
-                  data.results.detectors.filter(
-                    (item) => item.impact === "Medium"
-                  )
+                  mediumImpactIssues
                 )}
               </div>
             </div>`
@@ -235,27 +229,25 @@ function generateHTMLReport(data) {
         }
 
         ${
-          lowImapactIssues.length > 0
+          lowImpactIssues.length > 0
             ? `<div class="page-break-after">
               <h3>Low</h3>
               <div>
                 ${generateResultsHTML(
-                  data.results.detectors.filter((item) => item.impact === "Low")
-                )}
+                  lowImpactIssues
+                  )}
               </div>
             </div>`
             : ``
         }
 
         ${
-          imformationalImapactIssues.length > 0
+          informationalImpactIssues.length > 0
             ? `<div>
               <h3>Informational</h3>
               <div>
                 ${generateResultsHTML(
-                  data.results.detectors.filter(
-                    (item) => item.impact === "Informational"
-                  )
+                  informationalImpactIssues
                 )}
               </div>
             </div>`
@@ -276,12 +268,12 @@ function generateResultsHTML(results) {
 
     html += `
           <div class="result">
-            <h2>PU-${i < 9 ? "0" + (i + 1) : i + 1} - ${result.impact}: ${
+            <h4>PU-${i < 9 ? "0" + (i + 1) : i + 1} - ${result.impact}: ${
       result.elements.length > 0
         ? result.elements[0].type + result.elements[0].name
         : "Unknown"
-    }</h2>
-            <div>${converter.makeHtml(result.markdown)}</div>
+    }</h4>
+            <div>${github_uri ? converter.makeHtml(result.markdown): result.description}</div>
             <div>
               <p>Files affected:</p>
               <ul class="list">${printElements(result.elements)}</ul>
