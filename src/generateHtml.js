@@ -2,10 +2,7 @@ const showdown = require("showdown");
 const converter = new showdown.Converter();
 
 // Generate HTML Report
-let githubUri = "";
 function generateHtml(data, projectName, githubUri) {
-  githubUri = githubUri;
-
   const lowImpactIssues = data.results.detectors.filter(
     (item) =>
       item.impact === "Low" &&
@@ -97,7 +94,7 @@ function generateHtml(data, projectName, githubUri) {
               ? `<div class="page-break-after">
                 <h3>High</h3>
                 <div>
-                  ${generateResultsHTML(highImpactIssues)}
+                  ${generateResultsHTML(highImpactIssues, githubUri)}
                 </div>
               </div>`
               : ``
@@ -108,7 +105,7 @@ function generateHtml(data, projectName, githubUri) {
               ? `<div class="page-break-after">
                 <h3>Medium</h3>
                 <div>
-                  ${generateResultsHTML(mediumImpactIssues)}
+                  ${generateResultsHTML(mediumImpactIssues, githubUri)}
                 </div>
               </div>`
               : ``
@@ -119,7 +116,7 @@ function generateHtml(data, projectName, githubUri) {
               ? `<div class="page-break-after">
                 <h3>Low</h3>
                 <div>
-                  ${generateResultsHTML(lowImpactIssues)}
+                  ${generateResultsHTML(lowImpactIssues, githubUri)}
                 </div>
               </div>`
               : ``
@@ -130,7 +127,7 @@ function generateHtml(data, projectName, githubUri) {
               ? `<div>
                 <h3>Informational</h3>
                 <div>
-                  ${generateResultsHTML(informationalImpactIssues)}
+                  ${generateResultsHTML(informationalImpactIssues, githubUri)}
                 </div>
               </div>`
               : ``
@@ -143,7 +140,7 @@ function generateHtml(data, projectName, githubUri) {
 }
 
 // Generate HTML (Table Row) for results
-function generateResultsHTML(results) {
+function generateResultsHTML(results, githubUri) {
   let html = "";
   for (let i = 0; i < results.length; i++) {
     const result = results[i];
