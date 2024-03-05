@@ -1,10 +1,11 @@
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
+const config = require("../config");
 
-let etherscanApiKey = process.env.ETHERSCAN_API_KEY;
-let polygonscanApiKey = process.env.POLYGONSCAN_API_KEY;
-let basescanApiKey = process.env.BASESCAN_API_KEY;
+let etherscanApiKey = config.etherscanApiKey;
+let polygonscanApiKey = config.polygonscanApiKey;
+let basescanApiKey = config.basescanApiKey;
 const contractPath = path.join(process.cwd(), "contract.sol");
 const folderPath = path.join(process.cwd(), `slither-${Date.now().toString()}`);
 
