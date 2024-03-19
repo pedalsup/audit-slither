@@ -1,0 +1,40 @@
+:root {
+  --medium: #FFD79B;
+  --high: #FF9B9B;
+  --low: #A3FF9B;
+  --informational: #9BB7FF;
+  --anchorBg: #ECECFF;
+  --hrBg: #B1B3B5;
+  --description: #494949;
+  --hyperLink: #395DE6;
+}
+
+body {
+  font-family: "Sora", sans-serif !important;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  overflow-x: hidden;
+  font-size: 12px;
+}
+
+a {
+  background-color: var(--anchorBg);
+  color: var(--hyperLink);
+  line-height: 32px;
+  border-radius: 6px;
+  padding-block: 4px;
+  padding-inline: 6px;
+  text-decoration: none;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  margin-top: -60px; /* Adjust based on your needs */
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  margin-bottom: -60px; /* Adjust based on your needs */
+}

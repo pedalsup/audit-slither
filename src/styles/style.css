@@ -1,0 +1,217 @@
+/* Heading */
+.heading {
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+/* Border */
+.underline {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: var(--hrBg);
+}
+
+/* Issue Label */
+.label {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.high_label {
+  border: 1px solid var(--high);
+}
+
+.medium_label {
+  border: 1px solid var(--medium);
+}
+
+.low_label {
+  border: 1px solid var(--low);
+}
+
+.informational_label {
+  border: 1px solid var(--informational);
+}
+
+/* Issue Index Label */
+.background {
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0;
+  padding-block: 2px;
+  padding-inline: 3px;
+  font-weight: 400;
+  margin-block: 5px;
+  display: inline-block;
+}
+
+.medium-background {
+  background: var(--medium);
+}
+
+.high-background {
+  background: var(--high);
+}
+
+.low-background {
+  background: var(--low);
+}
+
+.informational-background {
+  background: var(--informational);
+}
+
+/* Description, Files Affected */
+.capitalize {
+  text-transform: capitalize;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--hrBg);
+}
+
+.description-detail-wrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  color: var(--description);
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  line-height: 20px;
+}
+
+.description-inner-text {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 0;
+}
+
+.description-inner-list {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.files-detail-wrapper{
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+/* Summary */
+.summary-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  margin-top: 35px;
+}
+
+.summary-section-inner .heading {
+  margin: 0;
+  padding: 0;
+}
+
+.summary-section-inner,
+.technical-section-inner {
+  position: relative;
+}
+
+.summary-section-inner .bg-heading,
+.technical-section-inner .bg-heading {
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  font-size: 45px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(249, 249, 249, 1) 25%,
+    rgba(177, 179, 181, 1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 3px transparent;
+  color: #ffffff;
+  z-index: -9;
+}
+
+.summary-section p {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+/* Table Box */
+.table-box {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--hrBg);
+  padding-bottom: 24px;
+}
+
+.table-box-inner {
+  flex: 1;
+  height: 48px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 10px;
+}
+
+.table-box-high {
+  border: 1px solid var(--high);
+}
+
+.table-box-medium {
+  border: 1px solid var(--medium);
+}
+
+.table-box-low {
+  border: 1px solid var(--low);
+}
+
+.table-box-informational {
+  border: 1px solid var(--informational);
+}
+
+.table-box-inner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.table-box-inner-icon {
+  width: 10px;
+  height: 10px;
+}
+
+.table-box-inner-title {
+  font-size: 10px;
+  font-weight: 300;
+}
+
+.table-box-inner-value {
+  font-size: 16px;
+  font-weight: 700;
+}

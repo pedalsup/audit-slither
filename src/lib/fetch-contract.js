@@ -6,7 +6,6 @@ let etherscanApiKey = process.env.ETHERSCAN_API_KEY;
 let polygonscanApiKey = process.env.POLYGONSCAN_API_KEY;
 let basescanApiKey = process.env.BASESCAN_API_KEY;
 const contractPath = path.join(process.cwd(), "contract.sol");
-const folderPath = path.join(process.cwd(), `slither-${Date.now().toString()}`);
 
 async function fetchContractSourceCode(contractAddress, networkName) {
   let url;
@@ -14,21 +13,21 @@ async function fetchContractSourceCode(contractAddress, networkName) {
   if (networkName === "polygon") {
     if (!polygonscanApiKey) {
       throw new Error(
-        "Please provide polygonscan api key in env configuration with name of `POLYGONSCAN_API_KEY`"
+        "Please provide polygonscan api key in env configuration with name of `POLYGONSCAN_API_KEY`",
       );
     }
     url = `https://api.polygonscan.io/api?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${polygonscanApiKey}`;
   } else if (networkName === "ethereum") {
     if (!etherscanApiKey) {
       throw new Error(
-        "Please provide etherscan api key in env configuration with name of `ETHERSCAN_API_KEY`"
+        "Please provide etherscan api key in env configuration with name of `ETHERSCAN_API_KEY`",
       );
     }
     url = `https://api.etherscan.io/api?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${etherscanApiKey}`;
   } else if (networkName === "base") {
     if (!basescanApiKey) {
       throw new Error(
-        "Please provide etherscan api key in env configuration with name of `BASESCAN_API_KEY`"
+        "Please provide etherscan api key in env configuration with name of `BASESCAN_API_KEY`",
       );
     }
     url = `https://api.basescan.org/api?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${basescanApiKey}`;
@@ -67,4 +66,4 @@ async function fetchContractSourceCode(contractAddress, networkName) {
   }
 }
 
-module.exports = { fetchContractSourceCode };
+module.exports = fetchContractSourceCode;

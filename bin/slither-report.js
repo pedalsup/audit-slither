@@ -4,15 +4,15 @@ const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer");
 const { spawn } = require("child_process");
-const { fetchContractSourceCode } = require("../src/fetch-contract");
-const generateHtml = require("../src/generateHtml");
+const { fetchContractSourceCode } = require("../src/lib/fetch-contract");
+const {generateHtml} = require("../src/lib/generateHtml");
 
 // Paths
 const jsonReportPath = path.join(process.cwd(), "slither.json");
 const htmlReportPath = path.join(process.cwd(), "slither.html");
 const pdfReportPath = path.join(
   process.cwd(),
-  `slither-${Date.now().toString()}.pdf`
+  `Audai-Audit-Report-${new Date().toDateString()}.pdf`
 );
 const contractFilePath = path.join(process.cwd(), "contract.sol");
 
@@ -76,10 +76,10 @@ async function main() {
     console.error(data.toString());
   });
 
-  slitherProcess.on("close", () => {
+  slitherProcess.on("close", async() => {
     const jsonData = require(jsonReportPath);
     if (jsonData.success) {
-      const html = generateHtml(jsonData, projectName, githubUri);
+      const html = await generateHtml(jsonData, projectName, githubUri);
       fs.writeFileSync(htmlReportPath, html);
 
       (async () => {
@@ -88,6 +88,20 @@ async function main() {
     }
   });
 }
+
+const getFileContent = async (filePath) => {
+  const cssPath = path.join(__dirname, filePath);
+  const parts = cssPath.split(path.sep);
+  const libIndex = parts.indexOf('bin');
+  if (libIndex > -1) {
+      parts.splice(libIndex, 1);
+  }
+
+  const cssFilePath = parts.join(path.sep);
+  const cssContent = await fs.promises.readFile(cssFilePath, 'utf8');
+
+  return cssContent;
+};
 
 // Generate PDF
 async function generatePDF(inputHtmlPath, outputPdfPath) {
@@ -101,41 +115,96 @@ async function generatePDF(inputHtmlPath, outputPdfPath) {
     waitUntil: "domcontentloaded",
   });
 
+  const logoIconSvg = await getFileContent('src/assets/logo_icon.svg');
+  const logoNameIconSvg = await getFileContent('src/assets/logo_name_icon.svg');
+
+  await page.addStyleTag({
+    content: "@page:first {margin-top: 0; margin-bottom: 150px;}"
+  });
   await page.setContent(content);
   await page.pdf({
     path: outputPdfPath,
     format: "A4",
     printBackground: true,
-    margin: { top: 40, left: 40, right: 40, bottom: 40 },
-    displayHeaderFooter: true,
-    headerTemplate: `<header style='
-      width: 100%;
-      font-size: 10px;
-      color: #000;
-      padding-inline: 40px;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #000;
-    '>
-      <div>
-        Pedalsup
+    margin: { top: "80px", bottom: "20px", left: "40px", right: "40px" },
+    displayHeaderFooter: true, 
+    headerTemplate: `<!doctype html>
+    <html>
+    <style>
+    html {
+      -webkit-print-color-adjust: exact;
+    }
+    </style>
+      <body>
+        <div style='
+          position: fixed;
+          top: 0;
+          width: 100%;
+          height: 80px;
+          font-size: 10px;
+          background-color: #000;
+      ' >
+          <div style='
+          background-color: #000000;
+            font-size: 32px;
+            display: flex;
+            flex-direction: column;
+            padding-inline: 40px;
+          '>
+            <a href="https://www.audai.xyz/" style="
+            text-decoration: none;
+            color: #ffffff;
+            display : flex;
+            align-items: center;
+            justify-direction: row;
+            ">
+            <div style= "
+            padding-right: 10px;
+            ">
+              ${logoIconSvg}
+              </div>
+              <div>
+              ${logoNameIconSvg}
+              </div>
+            </a>
+            <div style='
+              font-size: 20px;
+              color: #ffffff;
+            '>
+            Audit Report
+          </div>
+        </div>
       </div>
-    </header>`,
+      </body>
+    </html>`,
+    
     footerTemplate: `<footer style=' 
+      position: fixed;
+      bottom: 0;
       width: 100%;
+      height: 20px;
       font-size: 10px;
-      color: #000;
-      padding-inline: 40px;
-      padding-top: 10px;
-      border-top: 1px solid #000;
-    '>
-      <div
-        style='
-          text-align: right;
-        '
-      >
-        <span class='pageNumber'></span> / <span class='totalPages'></span>  
-      </div>
+      color: Black;
+      background-color:Black;
+      '>
+        <div style=' 
+          font-size: 10px;
+          color: rgb(255, 255, 255, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-inline: 40px;
+          margin-top: 5px;
+        ' >
+          <div>
+            Audit Report
+          </div>
+          <div style='
+            text-align: right;
+          '>
+            <span>Page</span> <span class='pageNumber'></span>
+          </div>
+    </div>
     </footer>`,
   });
 
