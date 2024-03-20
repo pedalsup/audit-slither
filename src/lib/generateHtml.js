@@ -7,30 +7,31 @@ const openAi = require("./openai");
 const getFileContent = async (filePath) => {
   const cssPath = path.join(__dirname, filePath);
   const parts = cssPath.split(path.sep);
-  const libIndex = parts.indexOf('lib');
+  const libIndex = parts.indexOf("lib");
   if (libIndex > -1) {
-      parts.splice(libIndex, 1);
+    parts.splice(libIndex, 1);
   }
 
   const cssFilePath = parts.join(path.sep);
-  const cssContent = await fs.promises.readFile(cssFilePath, 'utf8');
+  const cssContent = await fs.promises.readFile(cssFilePath, "utf8");
 
   return cssContent;
 };
 
 // Generate HTML Report
 async function generateHtml(data, projectName, githubUri) {
-  const cssStyleContent = await getFileContent('styles/style.css');
-  const cssGlobalContent = await getFileContent('styles/global.css');
+  const cssStyleContent = await getFileContent("styles/style.css");
+  const cssGlobalContent = await getFileContent("styles/global.css");
 
-  const mediumIconSvg = await getFileContent('assets/medium_icon.svg');
-  const highIconSvg = await getFileContent('assets/high_icon.svg');
-  const lowIconSvg = await getFileContent('assets/low_icon.svg');
-  const informationalIconSvg = await getFileContent('assets/informational_icon.svg');
-  const highBoldIconSvg = await getFileContent('assets/high_bold_icon.svg');
-  const mediumBoldIconSvg = await getFileContent('assets/medium_bold_icon.svg');
-  const lowBoldIconSvg = await getFileContent('assets/low_bold_icon.svg');
-  const informationalBoldIconSvg = await getFileContent('assets/informational_bold_icon.svg');
+  const mediumIconSvg = await getFileContent("assets/medium_icon.svg");
+  const highIconSvg = await getFileContent("assets/high_icon.svg");
+  const lowIconSvg = await getFileContent("assets/low_icon.svg");
+  const informationalIconSvg = await getFileContent(
+    "assets/informational_icon.svg",
+  );
+  const highBoldIconSvg = await getFileContent("assets/high_bold_icon.svg");
+  const mediumBoldIconSvg = await getFileContent("assets/medium_bold_icon.svg");
+  const lowBoldIconSvg = await getFileContent("assets/low_bold_icon.svg");
 
   const lowImpactIssues = data.results.detectors.filter(
     (item) =>
@@ -51,11 +52,27 @@ async function generateHtml(data, projectName, githubUri) {
     (item) =>
       item.impact === "Informational" &&
       !item.first_markdown_element.toString().includes("node_modules"),
-  );  
-  const highHtmlContent = await generateResultsHTML(highImpactIssues, githubUri, "high")
-  const mediumHtmlContent = await generateResultsHTML(mediumImpactIssues, githubUri, "medium")
-  const lowHtmlContent = await generateResultsHTML(lowImpactIssues, githubUri, "low")
-  const informationalHtmlContent = await generateResultsHTML(informationalImpactIssues, githubUri, "informational")
+  );
+  const highHtmlContent = await generateResultsHTML(
+    highImpactIssues,
+    githubUri,
+    "high",
+  );
+  const mediumHtmlContent = await generateResultsHTML(
+    mediumImpactIssues,
+    githubUri,
+    "medium",
+  );
+  const lowHtmlContent = await generateResultsHTML(
+    lowImpactIssues,
+    githubUri,
+    "low",
+  );
+  const informationalHtmlContent = await generateResultsHTML(
+    informationalImpactIssues,
+    githubUri,
+    "informational",
+  );
 
   const htmlTemplate = `
         <html>
@@ -228,19 +245,17 @@ async function generateHtml(data, projectName, githubUri) {
 
 // Generate HTML (Table Row) for results
 async function generateResultsHTML(results, githubUri, issueType) {
-  const iconPath = `assets/${issueType}_bold_icon.svg`;
-
   let html = "";
   for (let i = 0; i < results.length; i++) {
     const result = results[i];
 
-    const gptDescription = await openAi(githubUri
-      ? result.markdown
-      : result.description);
+    const gptDescription = await openAi(
+      githubUri ? result.markdown : result.description,
+    );
 
     html += `
             <div class="result">
-              ${i !== 0 ? `<p class="underline"/>`: ""}
+              ${i !== 0 ? "<p class='underline'/>" : ""}
               
               <p class="${issueType}-background background">AD${
                 i < 9 ? "0" + (i + 1) : i + 1
@@ -261,9 +276,10 @@ async function generateResultsHTML(results, githubUri, issueType) {
               <div class="files-detail-wrapper">  
                 <p class="description">Technical Description :</p>
                 <div class="description-inner-text">
-                  ${githubUri
-                    ? converter.makeHtml(result.markdown)
-                    : result.description
+                  ${
+                    githubUri
+                      ? converter.makeHtml(result.markdown)
+                      : result.description
                   }
                 </div>
               </div>
@@ -291,5 +307,5 @@ function printElements(elements) {
 
 module.exports = {
   generateHtml,
-  getFileContent
+  getFileContent,
 };
