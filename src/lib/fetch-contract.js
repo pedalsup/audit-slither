@@ -1,6 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
+const config = require("../../config");
 
 let etherscanApiKey = process.env.ETHERSCAN_API_KEY;
 let polygonscanApiKey = process.env.POLYGONSCAN_API_KEY;

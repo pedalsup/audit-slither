@@ -1,32 +1,34 @@
-const { OpenAI } = require('openai');
-const dotenv = require('dotenv');
+const { OpenAI } = require("openai");
+const dotenv = require("dotenv");
 dotenv.config("../../.env");
 
-const assistantAttributePrompt = "You are a helpful assistant. You are familiar with Solidity. You will be provided with slither issues description. You will have to respond back with human explanation of the solidity issues description. It should be very clear information providing brief about the issue. The description will also contain code snippets which will give better understanding of issue. Also you should not change the context of issue. Human readable description should be between 20-35 words.";
+const assistantAttributePrompt =
+  "You are a helpful assistant. You are familiar with Solidity. You will be provided with slither issues description. You will have to respond back with human explanation of the solidity issues description. It should be very clear information providing brief about the issue. The description will also contain code snippets which will give better understanding of issue. Also you should not change the context of issue. Human readable description should be between 20-35 words.";
 
-async function openAi (prompt) {
-    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+async function openAi(prompt) {
+  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-    if(!OPENAI_API_KEY){
-        throw new Error('OPENAI_API_KEY Key is missing in your environment variables. Please add it and try again.');
-    }
+  if (!OPENAI_API_KEY) {
+    throw new Error(
+      "OPENAI_API_KEY Key is missing in your environment variables. Please add it and try again.",
+    );
+  }
 
-    const openai = new OpenAI({
-        apiKey: OPENAI_API_KEY,
-    });
+  const openai = new OpenAI({
+    apiKey: OPENAI_API_KEY,
+  });
 
-    const gptResponse = await openai.chat.completions.create({
-        model: "gpt-4", // or another suitable model
-        messages: [
-            { role: 'assistant', content: assistantAttributePrompt },
-            { role: 'user', content: prompt }
-        ],
-        temperature: 0.1,
-        n: 1,
+  const gptResponse = await openai.chat.completions.create({
+    model: "gpt-4", // or another suitable model
+    messages: [
+      { role: "assistant", content: assistantAttributePrompt },
+      { role: "user", content: prompt },
+    ],
+    temperature: 0.1,
+    n: 1,
+  });
 
-      });   
-
-    return gptResponse.choices[0].message.content.trim();
+  return gptResponse.choices[0].message.content.trim();
 }
 
 module.exports = openAi;

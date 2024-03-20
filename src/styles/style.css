@@ -51,7 +51,7 @@
   padding-block: 2px;
   padding-inline: 3px;
   font-weight: 400;
-  margin-block: 5px;
+  margin-bottom: 5px;
   display: inline-block;
 }
 
@@ -78,7 +78,7 @@
   font-weight: 600;
   margin: 0;
   padding: 0;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   margin-bottom: 10px;
   border-bottom: 1px solid var(--hrBg);
 }
@@ -94,7 +94,6 @@
   font-weight: 400;
   margin: 0;
   padding: 0;
-  line-height: 20px;
 }
 
 .description-inner-text {
