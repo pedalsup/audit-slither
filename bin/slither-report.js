@@ -192,7 +192,7 @@ async function generatePDF(inputHtmlPath, outputPdfPath) {
         >
           <a href="https://www.audai.xyz/"> ${logoSvg} </a>
           <div style="font-size: 12px; font-weight: 700; color: #ffffff">
-            SLITHER REPORT
+            AUDIT REPORT
           </div>
         </div>
       </div>
