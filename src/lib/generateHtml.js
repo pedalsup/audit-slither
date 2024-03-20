@@ -2,7 +2,7 @@ const showdown = require("showdown");
 const converter = new showdown.Converter();
 const fs = require("fs");
 const path = require("path");
-const openAi = require("./openai");
+// const openAi = require("./openai");
 
 const getFileContent = async (filePath) => {
   const cssPath = path.join(__dirname, filePath);
@@ -249,9 +249,10 @@ async function generateResultsHTML(results, githubUri, issueType) {
   for (let i = 0; i < results.length; i++) {
     const result = results[i];
 
-    const gptDescription = await openAi(
-      githubUri ? result.markdown : result.description,
-    );
+    // const gptDescription = await openAi(
+    //   githubUri ? result.markdown : result.description,
+    // );
+    const gptDescription = "GPT Description";
 
     html += `
             <div class="result">

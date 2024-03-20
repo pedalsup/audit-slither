@@ -117,49 +117,49 @@ async function generatePDF(inputHtmlPath, outputPdfPath) {
     });
 
     const logoSvg = await getFileContent("src/assets/logo.svg");
-    const objectSvg = await getFileContent("src/assets/object.svg");
+    // const objectSvg = await getFileContent("src/assets/object.svg");
 
-    const firstPageHeaderTemplate = `<!doctype html>
-  <html>
-    <style>
-      html {
-        -webkit-print-color-adjust: exact;
-      }
-    </style>
-    <body>
-      <div
-        style="
-          position: fixed;
-          top: 0;
-          width: 100%;
-          height: 136px;
-          font-size: 10px;
-          background-color: #000;
-          display: flex;
-          align-items: center;
-        "
-      >
-        <div
-          style="
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-inline: 40px;
-          "
-        >
-          <div style="display:flex; flex-direction:column; gap: 5px;">
-            <a href="https://www.audai.xyz/">${logoSvg}</a>
-            <div style="font-size: 24px; font-weight: 700; color: #ffffff">
-              AUDIT REPORT
-            </div>
-          </div>
-          <div>${objectSvg}</div>
-        </div>
-      </div>
-    </body>
-  </html>
-  `;
+    //   const firstPageHeaderTemplate = `<!doctype html>
+    // <html>
+    //   <style>
+    //     html {
+    //       -webkit-print-color-adjust: exact;
+    //     }
+    //   </style>
+    //   <body>
+    //     <div
+    //       style="
+    //         position: fixed;
+    //         top: 0;
+    //         width: 100%;
+    //         height: 136px;
+    //         font-size: 10px;
+    //         background-color: #000;
+    //         display: flex;
+    //         align-items: center;
+    //       "
+    //     >
+    //       <div
+    //         style="
+    //           width: 100%;
+    //           display: flex;
+    //           align-items: center;
+    //           justify-content: space-between;
+    //           padding-inline: 40px;
+    //         "
+    //       >
+    //         <div style="display:flex; flex-direction:column; gap: 5px;">
+    //           <a href="https://www.audai.xyz/">${logoSvg}</a>
+    //           <div style="font-size: 24px; font-weight: 700; color: #ffffff">
+    //             AUDIT REPORT
+    //           </div>
+    //         </div>
+    //         <div>${objectSvg}</div>
+    //       </div>
+    //     </div>
+    //   </body>
+    // </html>
+    // `;
 
     const headerTemplate = `<!DOCTYPE html>
   <html>
